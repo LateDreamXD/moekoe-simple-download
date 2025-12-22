@@ -1,0 +1,43 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 22
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: |
+          pnpm build
+          cp LICENSE dist/LICENSE
+      - uses: TheDoctor0/zip-release@0.7.6
+        with:
+          directory: dist
+          filename: 'simple-download-${{ github.ref_name }}.zip'
+      - name: Generate changelog
+        env:
+          filename: 'CHANGELOG.md'
+        run: |
+          echo "## What's changed:" >> ${{ env.filename }}
+          git log --pretty=format:'- %s by @%an' --grep '^(. )?(fix|feat|perf|sync)(\(.+\))?:' -E $(git describe --tags --abbrev=0 ${{ github.ref_name }}^)..${{ github.ref_name }} >> ${{ env.filename }}
+          echo -e '\n\n[**Full Changes**](https://github.com/${{ github.repository }}/compare/'$(git describe --tags --abbrev=0 ${{ github.ref_name }}^)'...${{ github.ref_name }})' >> ${{ env.filename }}
+          echo '✔️ Changelog generated.'
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'dist/simple-download-${{ github.ref_name }}.zip'
+          bodyFile: 'CHANGELOG.md'
+          name: 'Simple Download ${{ github.ref_name }}'

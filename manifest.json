@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "MoeKoe Music Simple Download",
+  "version": "%version%",
+  "description": "MoeKoe Music 简单下载插件",
+  "permissions": ["scripting"],
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.iife.js"],
+    "run_at": "document_end"
+  }],
+  "action": {
+    "default_title": "MoeKoe Music 简单下载",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "256": "icon.png"
+  }
+}

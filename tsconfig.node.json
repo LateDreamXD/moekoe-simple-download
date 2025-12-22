@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "strict": true,
+    "target": "es2015",
+    "module": "nodenext",
+
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+    "types": [ "@types/node" ]
+  },
+  "include": [
+    ".bin/**/*"
+  ]
+}
