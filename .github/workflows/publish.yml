@@ -28,16 +28,8 @@ jobs:
         with:
           directory: dist
           filename: 'simple-download-${{ github.ref_name }}.zip'
-      - name: Generate changelog
-        env:
-          filename: 'CHANGELOG.md'
-        run: |
-          echo "## What's changed:" >> ${{ env.filename }}
-          git log --pretty=format:'- %s by @%an' --grep '^(. )?(fix|feat|perf|sync)(\(.+\))?:' -E $(git describe --tags --abbrev=0 ${{ github.ref_name }}^)..${{ github.ref_name }} >> ${{ env.filename }}
-          echo -e '\n\n[**Full Changes**](https://github.com/${{ github.repository }}/compare/'$(git describe --tags --abbrev=0 ${{ github.ref_name }}^)'...${{ github.ref_name }})' >> ${{ env.filename }}
-          echo '✔️ Changelog generated.'
       - uses: ncipollo/release-action@v1
         with:
           artifacts: 'dist/simple-download-${{ github.ref_name }}.zip'
-          bodyFile: 'CHANGELOG.md'
+          draft: true
           name: 'Simple Download ${{ github.ref_name }}'
