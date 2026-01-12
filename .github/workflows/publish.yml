@@ -24,6 +24,7 @@ jobs:
         run: |
           pnpm build
           cp LICENSE dist/LICENSE
+          mv dist/* dist/simple-download
       - uses: TheDoctor0/zip-release@0.7.6
         with:
           directory: dist
