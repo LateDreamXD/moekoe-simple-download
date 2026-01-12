@@ -1,5 +1,5 @@
-import logger from './libs/logger';
-import { injectBtn, injectMenu } from './libs/inject';
+import logger from './modules/logger';
+import { injectBtn, injectMenu } from './modules/inject';
 
 const init = () => {
 	try {injectBtn(injectMenu());}
