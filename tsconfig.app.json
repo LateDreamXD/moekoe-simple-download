@@ -5,9 +5,11 @@
     "strict": true,
     "target": "esnext",
     "module": "esnext",
+    "moduleResolution": "bundler",
 
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*"
