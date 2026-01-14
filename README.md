@@ -11,9 +11,9 @@
 
 ## 食用方法
 1. [下载](https://github.com/LateDreamXD/moekoe-simple-download/releases/latest)插件
-2. 解压到 MoeKoe Music 插件目录
-  `%AppData%\moekoemusic\extensions`
-3. 重启 MoeKoe Music
+2. 对于 0.2.1 或更高版本: 直接在`设置` - `插件`页面点击`安装插件`安装后点击左上角刷新按钮即可  
+   对于 0.2.0 或更低版本: 解压到 MoeKoe Music 插件目录 (`%AppData%\moekoemusic\extensions`),  
+   在`设置` - `插件`页面点击`刷新插件`后点击左上角刷新按钮即可
 
 ## 手动构建
 ```bash
