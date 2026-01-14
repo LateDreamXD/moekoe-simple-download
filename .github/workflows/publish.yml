@@ -24,13 +24,15 @@ jobs:
         run: |
           pnpm build
           cp LICENSE dist/LICENSE
-          mv dist/* dist/simple-download
+          mkdir plugin
+          mkdir plugin/simple-download
+          mv dist/* plugin/simple-download
       - uses: TheDoctor0/zip-release@0.7.6
         with:
-          directory: dist
+          directory: plugin
           filename: 'simple-download-${{ github.ref_name }}.zip'
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: 'dist/simple-download-${{ github.ref_name }}.zip'
+          artifacts: 'plugin/simple-download-${{ github.ref_name }}.zip'
           draft: true
           name: 'Simple Download ${{ github.ref_name }}'
