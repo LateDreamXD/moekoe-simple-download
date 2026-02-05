@@ -8,4 +8,4 @@ egg.addEventListener('mouseover', () => {
 });
 
 const versionEle = document.getElementById('version')!;
-versionEle.textContent = `v${version}`;
+versionEle.textContent = version;
