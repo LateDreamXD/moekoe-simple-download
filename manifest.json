@@ -1,5 +1,6 @@
 {
   "manifest_version": 3,
+  "moekoe": true,
   "name": "MoeKoe Music Simple Download",
   "version": "%version%",
   "description": "MoeKoe Music 简单下载插件",
