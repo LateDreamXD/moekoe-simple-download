@@ -31,9 +31,8 @@ jobs:
         with:
           directory: plugin
           filename: 'simple-download-${{ github.ref_name }}.zip'
-      - uses: softprops/action-gh-release@v2
+      - uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.RELEASE_TOKEN }}
           artifacts: 'plugin/simple-download-${{ github.ref_name }}.zip'
           draft: true
           name: 'Simple Download ${{ github.ref_name }}'
