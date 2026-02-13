@@ -8,7 +8,6 @@ import download from './utils/download';
 import { checkUpdate } from './utils/check_update';
 import { version } from '../../package.json';
 import defaultOptions from './default.json';
-import downloadIcon from './icons/hero/download.svg?raw';
 
 const checkUpdateAndNotify = async() => {
 	const latestVersion = await checkUpdate(version);

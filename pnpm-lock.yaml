@@ -30,9 +30,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-      unplugin-raw:
-        specifier: ^0.6.4
-        version: 0.6.4
       unplugin-vue:
         specifier: ^7.1.1
         version: 7.1.1(@types/node@25.2.0)(sass-embedded@1.97.3)(sass@1.97.3)(vue@3.5.28(typescript@5.9.3))
@@ -348,11 +345,6 @@ packages:
 
   '@vue/shared@3.5.28':
     resolution: {integrity: sha512-cfWa1fCGBxrvaHRhvV3Is0MgmrbSCxYTXCSCau2I0a1Xw1N1pHAvkWCiXPRAqjvToILvguNyEwjevUqAuBQWvQ==}
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
 
   alien-signals@3.1.2:
     resolution: {integrity: sha512-d9dYqZTS90WLiU0I5c6DHj/HcKkF8ZyGN3G5x8wSbslulz70KOxaqCT0hQCo9KOyhVqzqGojvNdJXoTumZOtcw==}
@@ -807,28 +799,11 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  unplugin-raw@0.6.4:
-    resolution: {integrity: sha512-Cxxk4mtLVJKwJjGVijQwVMkEOxBzBSz37jSfm44/Fw9lzo6z+oetXty5PrnkgWzKJYpeoJdBk6PnklibG0pLqg==}
-    engines: {node: '>=20.19.0'}
-    peerDependencies:
-      esbuild: '>=0.25.0'
-    peerDependenciesMeta:
-      esbuild:
-        optional: true
-
-  unplugin-utils@0.3.1:
-    resolution: {integrity: sha512-5lWVjgi6vuHhJ526bI4nlCOmkCIF3nnfXkCMDeMJrtdvxTs6ZFCM8oNufGTsDbKv/tJ/xj8RpvXjRuPBZJuJog==}
-    engines: {node: '>=20.19.0'}
-
   unplugin-vue@7.1.1:
     resolution: {integrity: sha512-0171rToKyJtoz+faE9CSGtAhCF7//t8sJueyyfZujf4RcKtoHLU/wqcsnuH5aq3tDB+I/Tg6IXiWgPvI+TK/zw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       vue: ^3.2.25
-
-  unplugin@2.3.11:
-    resolution: {integrity: sha512-5uKD0nqiYVzlmCRs01Fhs2BdkEgBS3SAVP6ndrBsuK42iC2+JHyxM05Rm9G8+5mkmRtzMZGY8Ct5+mliZxU/Ww==}
-    engines: {node: '>=18.12.0'}
 
   unplugin@3.0.0:
     resolution: {integrity: sha512-0Mqk3AT2TZCXWKdcoaufeXNukv2mTrEZExeXlHIOZXdqYoHHr4n51pymnwV8x2BOVxwXbK2HLlI7usrqMpycdg==}
@@ -1192,8 +1167,6 @@ snapshots:
 
   '@vue/shared@3.5.28': {}
 
-  acorn@8.15.0: {}
-
   alien-signals@3.1.2: {}
 
   ansis@4.2.0: {}
@@ -1555,16 +1528,6 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  unplugin-raw@0.6.4:
-    dependencies:
-      unplugin: 2.3.11
-      unplugin-utils: 0.3.1
-
-  unplugin-utils@0.3.1:
-    dependencies:
-      pathe: 2.0.3
-      picomatch: 4.0.3
-
   unplugin-vue@7.1.1(@types/node@25.2.0)(sass-embedded@1.97.3)(sass@1.97.3)(vue@3.5.28(typescript@5.9.3)):
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
@@ -1587,13 +1550,6 @@ snapshots:
       - terser
       - tsx
       - yaml
-
-  unplugin@2.3.11:
-    dependencies:
-      '@jridgewell/remapping': 2.3.5
-      acorn: 8.15.0
-      picomatch: 4.0.3
-      webpack-virtual-modules: 0.6.2
 
   unplugin@3.0.0:
     dependencies:
