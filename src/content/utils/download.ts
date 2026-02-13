@@ -18,4 +18,4 @@ const fetchDownload = async(url: string, filename?: string) => {
 }
 
 export {downlodFile, fetchDownload};
-export default {downlodFile, fetchDownload};
+export default {direct: downlodFile, fetch: fetchDownload};

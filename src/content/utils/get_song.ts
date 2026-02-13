@@ -1,4 +1,4 @@
-const getSongInfo = (): {
+const getCurrent = (): {
 	name: string,
 	author: string,
 	img: string,
@@ -10,4 +10,7 @@ const getSongInfo = (): {
 	else return null;
 }
 
-export default getSongInfo;
+export { getCurrent };
+export default {
+	getCurrent
+};

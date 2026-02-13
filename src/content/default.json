@@ -1,0 +1,6 @@
+{
+  "download_method": "fetch",
+  "filename_format": "{artist} - {title}.{ext}",
+  "check_update": true,
+  "experimental_features": {}
+}
