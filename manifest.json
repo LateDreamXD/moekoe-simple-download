@@ -3,18 +3,14 @@
   "moekoe": true,
   "name": "MoeKoe Music Simple Download",
   "version": "%version%",
-  "description": "MoeKoe Music 简单下载插件",
+  "description": "MoeKoe Music 简单下载插件 —— 轻量 · 简洁 · 开源",
   "permissions": ["scripting"],
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.iife.js"],
+    "css": ["content.css"],
     "run_at": "document_end"
   }],
-  "action": {
-    "default_title": "MoeKoe Music 简单下载",
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
-  },
   "icons": {
     "256": "icon.png"
   }
