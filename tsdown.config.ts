@@ -5,6 +5,7 @@ import scss from 'rollup-plugin-scss';
 export default defineConfig({
 	define: { isProd: JSON.stringify(true) },
 	noExternal: ['vue'],
+	inlineOnly: false,
 	entry: { content: 'src/content/index.ts' },
 	plugins: [vue(), scss({
 		fileName: 'content.css',
