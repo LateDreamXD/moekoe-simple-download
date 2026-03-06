@@ -9,11 +9,14 @@ import { checkUpdate } from './utils/check_update';
 import { version } from '../../package.json';
 import defaultOptions from './default.json';
 
+const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
+
 const checkUpdateAndNotify = async() => {
 	const latestVersion = await checkUpdate(version);
-	if(!latestVersion) return;
+	if(!latestVersion) { logger.log('not found new version'); return; }
+	logger.log(`new version available: v${latestVersion}`);
 	new Notification('Simple Download 有新版本', {
-		icon: 'https://assets.latedream.qzz.io/icons/moekoe_girl_cool_icon.png',
+		icon,
 		body: `当前版本: v${version}\n最新版本: v${latestVersion}`,
 		lang: 'zh-CN'
 	}).addEventListener('click', () =>
@@ -58,7 +61,8 @@ const init = async() => {
 
 		if(process.env.NODE_ENV === 'production')
 			addDlBtnToCtrls(options);
-		if(options.check_update) checkUpdateAndNotify();
+		try { if(options.check_update) checkUpdateAndNotify(); }
+		catch(e: any) { logger.error('failed to check update:', e.message, e?.stack); }
 	}
 	catch(e: any) {logger.error('failed to inject page:', e.message, e?.stack);}
 }
