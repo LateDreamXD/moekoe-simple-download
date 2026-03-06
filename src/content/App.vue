@@ -7,6 +7,7 @@ const { options, defaultOptions, version } = defineProps<{
 	version: string;
 }>();
 
+const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 const isMenuVisible = ref(false);
 
 // follow moekoe theme
@@ -70,11 +71,11 @@ onMounted(() => {
 	</span>
 	<button :class="{'menu-toggle': true, 'updated': options.version !== version}"
 		data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)" title="配置 Simple Download">
-		<img draggable="false" src="https://assets.latedream.qzz.io/icons/moekoe_girl_cool_icon.png" />
+		<img draggable="false" :src="icon" />
 	</button>
 	<div ref="menu" v-show="isMenuVisible" :class="['menu', theme, 'close']">
 		<span class="title-panel">
-			<img draggable="false" src="https://assets.latedream.qzz.io/icons/moekoe_girl_cool_icon.png" width="32" height="32" />
+			<img draggable="false" :src="icon" width="32" height="32" />
 			<span class="title">Simple Download<sup v-text="`v${version}`" /></span>
 			<button data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)"><i class="fas fa-xmark" /></button>
 		</span>
