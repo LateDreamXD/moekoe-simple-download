@@ -313,10 +313,10 @@ onMounted(() => {
 				}
 			}
 			&[type="submit"] {
-				background-color: #ff1493;
+				background-color: #ff1493 !important;
 				color: #fff;
 				&:hover {
-					background-color: #ff69b4;
+					background-color: #ff69b4 !important;
 				}
 			}
 		}
