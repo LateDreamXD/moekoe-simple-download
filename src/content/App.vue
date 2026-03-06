@@ -138,7 +138,7 @@ onMounted(() => {
 }
 @keyframes menu-hide {
 	from {
-		display: block;
+		display: flex;
 		opacity: 1;
 		transform: translateX(0);
 	}
