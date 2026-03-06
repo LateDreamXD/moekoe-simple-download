@@ -48,9 +48,8 @@ onMounted(() => {
 		const initVersion = () => {
 			options.version = version;
 			localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
-			document.removeEventListener('mousedown', initVersion);
 		}
-		document.addEventListener('mousedown', initVersion);
+		document.addEventListener('mousedown', initVersion, { once: true });
 	}
 });
 </script>
