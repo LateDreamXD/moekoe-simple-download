@@ -1,4 +1,5 @@
 type SDOptionsV1 = {
+	[x: string]: any;
 	check_update: boolean;
 	/** @default 'fetch' */
 	download_method: 'fetch' | 'direct';

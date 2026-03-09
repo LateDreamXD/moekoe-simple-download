@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import logger from './utils/logger';
 
 const { options, defaultOptions, version } = defineProps<{
@@ -7,6 +7,11 @@ const { options, defaultOptions, version } = defineProps<{
 	defaultOptions: SDOptionsV1;
 	version: string;
 }>();
+(() => {
+	Object.keys(defaultOptions).forEach(key => {
+		if(!options[key]) options[key] = defaultOptions[key];
+	});
+})();
 
 const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 const isMenuVisible = ref(false);
@@ -140,7 +145,7 @@ onMounted(() => {
 		document.addEventListener('mousedown', initVersion, { once: true });
 	}
 
-	parsePosition(options.menuBtnPosition || defaultOptions.menuBtnPosition);
+	parsePosition(options.menuBtnPosition);
 	currentEdge.value = updateEdge();
 });
 
