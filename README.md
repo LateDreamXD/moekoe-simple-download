@@ -8,7 +8,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/LateDreamXD/moekoe-simple-download?sort=semver&display_name=tag&style=flat-square&logo=github)](https://github.com/LateDreamXD/moekoe-simple-download/releases/latest)
 [![Author](https://img.shields.io/badge/%F0%9F%8E%89_Create_by_LateDreamXD-with_Love_%E2%9D%A4-pink?style=flat-square)](https://github.com/LateDreamXD)
 
-![screenshot](./.doc/screenshot.png)
+![screenshot](./.doc/screenshot.webp)
 
 让你的 [MoeKoe Music](https://github.com/MoeKoeMusic/MoeKoeMusic) 能下载音乐到本地
 
