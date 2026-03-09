@@ -12,6 +12,10 @@ type SDOptionsV1 = {
 	filename_format: string;
 	experimental_features: {}
 	version?: string;
+	menuBtnPosition: {
+		x: number;
+		y: number;
+	};
 }
 
 type SDOptionsV0 = {

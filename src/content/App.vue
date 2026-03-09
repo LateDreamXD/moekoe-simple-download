@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import logger from './utils/logger';
 
 const { options, defaultOptions, version } = defineProps<{
 	options: SDOptionsV1;
@@ -9,6 +10,85 @@ const { options, defaultOptions, version } = defineProps<{
 
 const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 const isMenuVisible = ref(false);
+const menuBtnPos = ref<{
+	left?: string;
+	top?: string;
+}>({});
+const lastMenuBtnPos = ref<{
+	left?: string;
+	top?: string;
+}>({});
+
+const isDragging = ref(false);
+
+function updateEdge(pos?: {x?: number, y?: number}) {
+	const edgeThreshold = 50;
+	const w = window.innerWidth;
+	// const h = window.innerHeight;
+	const x = pos?.x || parseInt(menuBtnPos.value.left || '0');
+	// const y = pos?.y || parseInt(menuBtnPos.value.top || '0');
+
+	if (x < edgeThreshold) return 'left';
+	if (x > w - 16 - edgeThreshold) return 'right';
+	// if (y < edgeThreshold) return 'top';
+	// if (y > h - 16 - edgeThreshold) return 'bottom';
+	return 'none';
+}
+
+const currentEdge = ref(updateEdge());
+
+function handleDragStart(e: DragEvent) {
+	isDragging.value = true;
+}
+
+function handleDragEnd(e: DragEvent) {
+	isDragging.value = false;
+	if(e.clientX === 0 && e.clientY === 0) return;
+	const w = window.innerWidth;
+	const h = window.innerHeight;
+	lastMenuBtnPos.value = menuBtnPos.value;
+	const newPos = {
+		left: '0',
+		top: '0'
+	};
+	if(e.clientX > w - 32) newPos.left = (w - 32) + 'px';
+	else if(e.clientX < 0) newPos.left = '-16px';
+	else newPos.left = e.clientX + 'px';
+	if(e.clientY > h - 32) newPos.top = (h - 32) + 'px';
+	else if(e.clientY < 0) newPos.top = '-16px';
+	else newPos.top = e.clientY + 'px';
+
+	currentEdge.value = updateEdge({x: e.clientX, y: e.clientY});
+	if(currentEdge.value === 'left') newPos.left = '-16px';
+	else if(currentEdge.value === 'right') newPos.left = w - 16 + 'px';
+	// else if(currentEdge.value === 'top') newPos.top = '-16px';
+	// else if(currentEdge.value === 'bottom') newPos.top = h - 32 + 'px';
+
+	menuBtnPos.value = newPos;
+	options.menuBtnPosition = {
+		x: parseInt(menuBtnPos.value.left!.replace('px', '')),
+		y: parseInt(menuBtnPos.value.top!.replace('px', ''))
+	}
+	localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
+}
+
+function handleMouseEnter() {
+	const newPos = menuBtnPos.value;
+	if(currentEdge.value === 'left') newPos.left = options.menuBtnPosition.x + 24 + 'px';
+	else if(currentEdge.value === 'right') newPos.left = options.menuBtnPosition.x - 24 + 'px';
+	// else if(currentEdge.value === 'top') newPos.top = options.menuBtnPosition.y + 16 + 'px';
+	// else if(currentEdge.value === 'bottom') newPos.top = options.menuBtnPosition.y - 32 + 'px';
+	menuBtnPos.value = newPos;
+}
+
+function handleMouseLeave() {
+	const newPos = menuBtnPos.value;
+	if(currentEdge.value === 'left') newPos.left = '-16px';
+	else if(currentEdge.value === 'right') newPos.left = options.menuBtnPosition.x + 'px';
+	// else if(currentEdge.value === 'top') newPos.top = '-16px';
+	// else if(currentEdge.value === 'bottom') newPos.top = options.menuBtnPosition.y + 'px';
+	menuBtnPos.value = newPos;
+}
 
 // follow moekoe theme
 const theme = ref(localStorage.getItem('theme') || 'auto');
@@ -43,6 +123,14 @@ function toggleMenu(el: HTMLDivElement) {
 	isMenuVisible.value = !isMenuVisible.value;
 }
 
+function parsePosition(pos: SDOptionsV1['menuBtnPosition']) {
+	menuBtnPos.value = {
+		left: pos.x + 'px',
+		top: pos.y + 'px',
+	}
+	logger.log('new position:', menuBtnPos.value);
+}
+
 onMounted(() => {
 	if(options.version !== version) {
 		const initVersion = () => {
@@ -51,28 +139,28 @@ onMounted(() => {
 		}
 		document.addEventListener('mousedown', initVersion, { once: true });
 	}
+
+	parsePosition(options.menuBtnPosition || defaultOptions.menuBtnPosition);
+	currentEdge.value = updateEdge();
+});
+
+onUnmounted(() => {
 });
 </script>
 
 <template>
-	<span v-if="options.version !== version" :class="['updated', theme]">
-		<p style="text-align: right;">
-			ヾ(≧▽≦*)o 好久不见！Simple Download 刚刚更新到了 v{{ version }}<br>
-			点击右侧图标体验全新的功能 👉
-		</p>
-		<p style="display: flex; justify-content: space-between;">
-			<a :href="`https://github.com/LateDreamXD/simple-download/releases/tag/v${version}`"
-				target="_blank" rel="noopener">
-				点我查看更新日志
-			</a>
-			<span>此消息每次更新后都会显示</span>
-		</p>
-	</span>
 	<button :class="{'menu-toggle': true, 'updated': options.version !== version}"
-		data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)" title="配置 Simple Download">
+		data-type="icon" @click="isDragging || toggleMenu($refs.menu as HTMLDivElement)"
+		title="配置 Simple Download" draggable="true" :style="menuBtnPos"
+		@dragstart="handleDragStart" @dragend="handleDragEnd"
+		@mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"
+		:data-edge="currentEdge" :data-dragging="isDragging">
 		<img draggable="false" :src="icon" />
 	</button>
-	<div ref="menu" v-show="isMenuVisible" :class="['menu', theme, 'close']">
+	<div ref="menu" v-show="isMenuVisible" :class="['menu', theme, 'close']" :style="{
+		left: options.menuBtnPosition.x + (currentEdge === 'right' ? -380 : 24) + 'px',
+		top: options.menuBtnPosition.y - 24 + 'px'
+	}">
 		<span class="title-panel">
 			<img draggable="false" :src="icon" width="32" height="32" />
 			<span class="title">Simple Download<sup v-text="`v${version}`" /></span>
@@ -128,23 +216,23 @@ onMounted(() => {
 @keyframes menu-show {
 	from {
 		opacity: 0;
-		transform: translateX(10px);
+		transform: translateY(-24px);
 	}
 	to {
 		opacity: 1;
-		transform: translateX(0);
+		transform: translateY(0);
 	}
 }
 @keyframes menu-hide {
 	from {
 		display: flex;
 		opacity: 1;
-		transform: translateX(0);
+		transform: translateY(0);
 	}
 	to {
 		display: none;
 		opacity: 0;
-		transform: translateX(10px);
+		transform: translateY(-24px);
 	}
 }
 @keyframes pulse {
@@ -158,8 +246,6 @@ onMounted(() => {
 	animation: menu-show 0.2s ease-in-out;
 	position: fixed;
 	padding: 0.5rem;
-	top: 5%;
-	right: 32px;
 	border: 1px solid var(--border-color);
 	border-radius: 4px;
 	color: var(--color);
@@ -173,22 +259,72 @@ onMounted(() => {
 	}
 }
 .menu-toggle[data-type="icon"] {
+	cursor: move;
 	position: fixed;
-	top: 10%;
 	opacity: 0.2;
-	right: -14px;
 	width: 32px;
 	height: 32px;
-	transform: rotate(-45deg);
-	transition: right 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, top 0.02s ease-in-out, left 0.02s ease-in-out, right 0.02s ease-in-out, bottom 0.02s ease-in-out;
 	z-index: 99;
-	&:hover {
-		animation: none !important;
-		transform: rotate(0deg);
-		background-color: transparent;
-		right: 6px;
-		opacity: 1;
+
+	&[data-dragging="true"] {
+		cursor: move;
 	}
+	
+	&[data-edge="none"] {
+		transform: rotate(0deg);
+		&:hover {
+			animation: none !important;
+			background-color: transparent;
+			right: 6px;
+			opacity: 1;
+		}
+	}
+	
+	&[data-edge="right"] {
+		transform: rotate(-45deg);
+		&:hover {
+			animation: none !important;
+			transform: rotate(0deg);
+			background-color: transparent;
+			left: 6px;
+			opacity: 1;
+		}
+	}
+	
+	&[data-edge="left"] {
+		transform: rotate(45deg);
+		&:hover {
+			animation: none !important;
+			transform: rotate(0deg);
+			background-color: transparent;
+			right: 6px;
+			opacity: 1;
+		}
+	}
+	
+	&[data-edge="top"] {
+		transform: rotate(180deg);
+		&:hover {
+			animation: none !important;
+			transform: rotate(0deg);
+			background-color: transparent;
+			bottom: 6px;
+			opacity: 1;
+		}
+	}
+	
+	&[data-edge="bottom"] {
+		transform: rotate(0deg);
+		&:hover {
+			animation: none !important;
+			transform: rotate(0deg);
+			background-color: transparent;
+			top: 6px;
+			opacity: 1;
+		}
+	}
+	
 	&.updated {
 		opacity: 1;
 		outline: 4px solid transparent;
