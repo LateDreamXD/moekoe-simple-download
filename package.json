@@ -8,7 +8,10 @@
     "build": "tsdown",
     "postbuild": "node --experimental-strip-types .bin/postbuild.ts"
   },
-  "author": "晚梦",
+  "author": {
+    "name": "晚梦",
+    "url": "https://github.com/LateDreamXD"
+  },
   "license": "MIT",
   "packageManager": "pnpm@10.28.0",
   "dependencies": {

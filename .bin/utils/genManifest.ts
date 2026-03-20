@@ -7,6 +7,8 @@ const dist_path = path.join(process.cwd(), 'dist');
 
 const start_time = Date.now();
 
+(template.author as any) = package_json.author;
+
 template.version = package_json.version;
 
 try {

@@ -1,10 +1,13 @@
 {
   "manifest_version": 3,
   "moekoe": true,
+  "minversion": "1.5.5",
   "name": "MoeKoe Music Simple Download",
+  "plugin_id": "simple-download",
   "version": "%version%",
   "description": "MoeKoe Music 简单下载插件 —— 轻量 · 简洁 · 开源",
   "permissions": ["scripting"],
+  "author": "%author%",
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.iife.js"],
