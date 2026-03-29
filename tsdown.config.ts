@@ -1,17 +1,18 @@
 import { defineConfig } from 'tsdown';
 import vue from 'unplugin-vue/rolldown';
-import scss from 'rollup-plugin-scss';
 
 export default defineConfig({
 	define: { isProd: JSON.stringify(true) },
-	noExternal: ['vue'],
-	inlineOnly: false,
+	deps: {
+		alwaysBundle: ['vue'],
+		onlyBundle: false,
+	},
 	entry: { content: 'src/content/index.ts' },
-	plugins: [vue(), scss({
+	plugins: [vue()],
+	css: {
 		fileName: 'content.css',
-		sass: await import('sass-embedded'),
-		outputStyle: 'compressed'
-	})],
+		minify: true,
+	},
 	platform: 'browser',
 	minify: true,
 	format: 'iife',
