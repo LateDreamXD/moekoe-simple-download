@@ -13,6 +13,10 @@ export default defineConfig({
 		fileName: 'content.css',
 		minify: true,
 	},
+	copy: {
+		from: 'public/**/*',
+		to: 'dist'
+	},
 	platform: 'browser',
 	minify: true,
 	format: 'iife',

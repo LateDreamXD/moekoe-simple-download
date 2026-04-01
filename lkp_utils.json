@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/@latedream/moekoe-plugin-utils/schema/lkp_utils.json",
+  "manifest": {
+    "outpath": "dist/manifest.json"
+  },
+  "meta": {
+    "name": "MoeKoe Music Simple Download",
+    "id": "simple-download",
+    "min_moekoe_version": "1.5.5",
+    "description": "MoeKoe Music 简单下载插件 —— 轻量 · 简洁 · 开源",
+    "permissions": ["scripting"],
+    "injects": [{
+      "matches": ["<all_urls>"],
+      "js": ["content.iife.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }],
+    "icons": {"256": "icon.png"},
+    "csp": [{"matches": ["<all_urls>"], "resources": ["icon.png"]}]
+  }
+}
