@@ -13,8 +13,8 @@ importers:
         version: 3.5.31(typescript@6.0.2)
     devDependencies:
       '@latedream/moekoe-plugin-utils':
-        specifier: ^1.0.0-alpha.1
-        version: 1.0.0-alpha.1
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1
       '@tsdown/css':
         specifier: ^0.21.7
         version: 0.21.7(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(postcss@8.5.8)(sass-embedded@1.98.0)(sass@1.98.0)(tsdown@0.21.7)
@@ -111,8 +111,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@latedream/moekoe-plugin-utils@1.0.0-alpha.1':
-    resolution: {integrity: sha512-092rep55SaIPmbh0OlUY3IYvdnCEMma79lYxhW/GYymwGwdNIjfGdpRd+AhmufktHCfU/FgxCKAYafz0P4EmzQ==}
+  '@latedream/moekoe-plugin-utils@1.0.0-beta.1':
+    resolution: {integrity: sha512-Km9SquaQXgJ7laVvQMGoO28fS6SixjKTt++C8rS+JcPoVpFiwup/4GeEIMlqyZ26Zu4leQ2MwMA+fdEsxDcszQ==}
     hasBin: true
 
   '@napi-rs/wasm-runtime@1.1.2':
@@ -1017,7 +1017,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@latedream/moekoe-plugin-utils@1.0.0-alpha.1':
+  '@latedream/moekoe-plugin-utils@1.0.0-beta.1':
     dependencies:
       '@types/node': 25.5.0
       cac: 7.0.0
