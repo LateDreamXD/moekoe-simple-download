@@ -34,3 +34,13 @@ pnpm build
 ## 免责声明
 
 本插件仅供交流学习使用，请勿用于商业用途，由使用者自行承担因使用本插件而产生的一切法律责任。
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=LateDreamXD%2Fmoekoe-simple-download&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=LateDreamXD/moekoe-simple-download&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=LateDreamXD/moekoe-simple-download&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=LateDreamXD/moekoe-simple-download&type=date&legend=top-left" />
+ </picture>
+</a>
