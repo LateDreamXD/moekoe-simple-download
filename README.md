@@ -9,6 +9,10 @@
 [![Author](https://img.shields.io/badge/%F0%9F%8E%89_Create_by_LateDreamXD-with_Love_%E2%9D%A4-pink?style=flat-square)](https://github.com/LateDreamXD)
 
 > [!NOTE]
+> Simple Download 正在收集用户反馈，欢迎在 [GitHub Issues](https://github.com/LateDreamXD/moekoe-simple-download/issues) 提交问题/建议或填写 [用户调研](https://docs.qq.com/form/page/DQkFaUHhUbmxKeW9i)。
+  
+
+> [!NOTE]
 > 因插件性质，此插件将永远不会上架官方插件市场
   
 
