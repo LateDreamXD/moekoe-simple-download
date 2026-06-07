@@ -13,20 +13,20 @@
     "url": "https://github.com/LateDreamXD"
   },
   "license": "MIT",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@11.5.2",
   "dependencies": {
-    "vue": "^3.5.31"
+    "vue": "^3.5.35"
   },
   "devDependencies": {
     "@latedream/moekoe-plugin-utils": "1.0.0-beta.2",
-    "@tsdown/css": "^0.21.7",
-    "@types/node": "^25.5.0",
-    "chrome-types": "^0.1.425",
-    "sass-embedded": "^1.98.0",
-    "tsdown": "^0.21.7",
-    "typescript": "^6.0.2",
-    "unplugin-vue": "^7.1.1",
-    "vite": "^8.0.3",
-    "vue-tsc": "^3.2.6"
+    "@tsdown/css": "^0.22.2",
+    "@types/node": "^25.9.2",
+    "chrome-types": "^0.1.429",
+    "sass-embedded": "^1.100.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "unplugin-vue": "^7.2.0",
+    "vite": "^8.0.16",
+    "vue-tsc": "^3.3.3"
   }
 }
