@@ -11,6 +11,9 @@ importers:
       vue:
         specifier: ^3.5.35
         version: 3.5.35(typescript@6.0.3)
+      xhr-hook-cycle:
+        specifier: github:lvxiaowu/xhr-hook-cycle
+        version: https://codeload.github.com/lvxiaowu/xhr-hook-cycle/tar.gz/00c7aab621839c6c51975546e3cc2cf8fec3ad84
     devDependencies:
       '@latedream/moekoe-plugin-utils':
         specifier: 1.0.0-beta.2
@@ -1160,6 +1163,10 @@ packages:
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
+  xhr-hook-cycle@https://codeload.github.com/lvxiaowu/xhr-hook-cycle/tar.gz/00c7aab621839c6c51975546e3cc2cf8fec3ad84:
+    resolution: {gitHosted: true, integrity: sha512-wkZdgGiyKyHHfIFMcvqxJvTSeMNqzEqHqupW44CWHQso+zP01zBCB/P6MY/pk2rNUBp57dlR4UF2fwSA4qXaxA==, tarball: https://codeload.github.com/lvxiaowu/xhr-hook-cycle/tar.gz/00c7aab621839c6c51975546e3cc2cf8fec3ad84}
+    version: 1.1.2
+
 snapshots:
 
   '@babel/generator@8.0.0-rc.6':
@@ -2052,3 +2059,5 @@ snapshots:
       typescript: 6.0.3
 
   webpack-virtual-modules@0.6.2: {}
+
+  xhr-hook-cycle@https://codeload.github.com/lvxiaowu/xhr-hook-cycle/tar.gz/00c7aab621839c6c51975546e3cc2cf8fec3ad84: {}

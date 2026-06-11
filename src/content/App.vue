@@ -166,42 +166,52 @@ onUnmounted(() => {
 		left: options.menuBtnPosition.x + (currentEdge === 'right' ? -380 : 24) + 'px',
 		top: options.menuBtnPosition.y - 24 + 'px'
 	}">
-		<span class="title-panel">
+		<div class="title-panel">
 			<img draggable="false" :src="icon" width="32" height="32" />
 			<span class="title">Simple Download<sup v-text="`v${version}`" /></span>
 			<button data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)"><i class="fas fa-xmark" /></button>
-		</span>
+		</div>
 		<span class="separator" />
-		<span class="menu-item">
-			<label for="download-mode">
-				下载方式
-				<small v-if="options.download_method === 'fetch'">(～￣▽￣)～</small>
-				<small v-else>～(￣▽￣～)</small>
-			</label>
-			<select id="download-mode" v-model="options.download_method">
-				<option value="fetch">Fetch API</option>
-				<option value="direct">直接下载</option>
-			</select>
-		</span>
-		<span v-if="options.download_method === 'fetch'" class="menu-item">
-			<label for="filename-format" class="help" @click="formatHelp">文件名格式<sup>?</sup></label>
-			<input id="filename-format" v-model="options.filename_format" type="text" required />
-		</span>
-		<span class="separator" />
-		<span class="menu-item">
-			<label for="check-update">
-				检查更新
-				<small>每次启动时检查更新</small>
-			</label>
-			<input id="check-update" type="checkbox" role="switch" v-model="options.check_update" />
-		</span>
-		<span class="menu-item">
-			<i style="opacity: 0.05;">@LateDreamXD</i>
-			<span class="menu-actions">
-				<button @click="resetOptions" type="reset">重置</button>
-				<button @click="saveOptions" type="submit">保存</button>
-			</span>
-		</span>
+		<form @submit.prevent="saveOptions" @reset.prevent="resetOptions">
+			<div class="menu-item">
+				<label for="download-mode">
+					下载方式
+					<small v-if="options.download_method === 'fetch'">(～￣▽￣)～</small>
+					<small v-else>～(￣▽￣～)</small>
+				</label>
+				<select id="download-mode" v-model="options.download_method">
+					<option value="fetch">Fetch API</option>
+					<option value="direct">直接下载</option>
+				</select>
+			</div>
+			<div v-if="options.download_method === 'fetch'" class="menu-item">
+				<label for="filename-format" class="help" @click="formatHelp">文件名格式<sup>?</sup></label>
+				<input id="filename-format" v-model="options.filename_format" type="text" required />
+			</div>
+			<span class="separator" />
+			<div class="menu-item">
+				<label for="hook-contextmenu">
+					注入右键菜单 (实验性)
+					<small>刷新生效</small>
+				</label>
+				<input id="hook-contextmenu" type="checkbox" role="switch" v-model="options.experimental_features.hook_contextmenu" />
+			</div>
+			<span class="separator" />
+			<div class="menu-item">
+				<label for="check-update">
+					检查更新
+					<small>每次启动时检查更新</small>
+				</label>
+				<input id="check-update" type="checkbox" role="switch" v-model="options.check_update" />
+			</div>
+			<div class="menu-item">
+				<i style="opacity: 0.05;">@LateDreamXD</i>
+				<span class="menu-actions">
+					<button type="reset">重置</button>
+					<button type="submit">保存</button>
+				</span>
+			</div>
+		</form>
 	</div>
 </template>
 

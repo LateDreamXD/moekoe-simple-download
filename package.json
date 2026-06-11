@@ -2,7 +2,7 @@
   "name": "moekoe-simple-download",
   "private": true,
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "scripts": {
     "dev": "vite",
     "build": "tsdown",
@@ -15,7 +15,8 @@
   "license": "MIT",
   "packageManager": "pnpm@11.5.2",
   "dependencies": {
-    "vue": "^3.5.35"
+    "vue": "^3.5.35",
+    "xhr-hook-cycle": "github:lvxiaowu/xhr-hook-cycle"
   },
   "devDependencies": {
     "@latedream/moekoe-plugin-utils": "1.0.0-beta.2",

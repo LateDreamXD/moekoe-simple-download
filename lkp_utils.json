@@ -18,7 +18,7 @@
       "matches": ["<all_urls>"],
       "js": ["content.iife.js"],
       "css": ["content.css"],
-      "run_at": "document_end"
+      "run_at": "document_start"
     }],
     "icons": {"256": "icon.png"},
     "csp": [{"matches": ["<all_urls>"], "resources": ["icon.png"]}]

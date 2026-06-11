@@ -11,7 +11,9 @@ type SDOptionsV1 = {
 	 * @default '{artist} - {title}.{ext}'
 	 */
 	filename_format: string;
-	experimental_features: {}
+	experimental_features: {
+		hook_contextmenu: boolean
+	}
 	version?: string;
 	menuBtnPosition: {
 		x: number;
