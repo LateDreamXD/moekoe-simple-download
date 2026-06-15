@@ -47,28 +47,28 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 
 const init = async() => {
 	const checkResult = check();
-	if(!checkResult.isMoekoeApp && !checkResult.isMoekoeWeb) {
-		logger.log('not moekoe app or web app, skip');
-		return;
+	if(checkResult.isMoekoeApp || checkResult.isMoekoeWeb) {
+		if(checkResult.isMoekoeApp && location.protocol === 'file:')
+			if(!location.pathname.endsWith('app.asar/dist/index.html')) return;
+		try {
+			const root = document.createElement('div');
+			document.body.appendChild(root);
+
+			upgrade(defaultOptions as SDOptionsV1);
+			const options = reactive<SDOptionsV1>(JSON.parse(
+				localStorage.getItem('latedream:simple_download_options') || 'null'
+			) || defaultOptions);
+
+			const app = createApp(App, { options, defaultOptions, version });
+			app.mount(root);
+
+			if(isProd)
+				addDlBtnToCtrls(options);
+			try { if(options.check_update) checkUpdateAndNotify(); }
+			catch(e: any) { logger.error('failed to check update:', e.message, e?.stack); }
+		}
+		catch(e: any) {logger.error('failed to inject page:', e.message, e?.stack);}
 	}
-	try {
-		const root = document.createElement('div');
-		document.body.appendChild(root);
-
-		upgrade(defaultOptions as SDOptionsV1);
-		const options = reactive<SDOptionsV1>(JSON.parse(
-			localStorage.getItem('latedream:simple_download_options') || 'null'
-		) || defaultOptions);
-
-		const app = createApp(App, { options, defaultOptions, version });
-		app.mount(root);
-
-		if(isProd)
-			addDlBtnToCtrls(options);
-		try { if(options.check_update) checkUpdateAndNotify(); }
-		catch(e: any) { logger.error('failed to check update:', e.message, e?.stack); }
-	}
-	catch(e: any) {logger.error('failed to inject page:', e.message, e?.stack);}
 }
 
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
