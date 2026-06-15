@@ -46,7 +46,11 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 }
 
 const init = async() => {
-	if(!check()) { logger.log('not moekoe page, skip'); return; }
+	const checkResult = check();
+	if(!checkResult.isMoekoeApp && !checkResult.isMoekoeWeb) {
+		logger.log('not moekoe app or web app, skip');
+		return;
+	}
 	try {
 		const root = document.createElement('div');
 		document.body.appendChild(root);
@@ -59,7 +63,7 @@ const init = async() => {
 		const app = createApp(App, { options, defaultOptions, version });
 		app.mount(root);
 
-		if(process.env.NODE_ENV === 'production')
+		if(isProd)
 			addDlBtnToCtrls(options);
 		try { if(options.check_update) checkUpdateAndNotify(); }
 		catch(e: any) { logger.error('failed to check update:', e.message, e?.stack); }

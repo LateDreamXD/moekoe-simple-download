@@ -1,3 +1,12 @@
-export const check = () =>
-	document.title.toLowerCase().includes('moekoe') ||
-	(document.querySelector('meta[name="description"]') as HTMLMetaElement)?.content?.toLowerCase().includes('moekoe');
+const OriginalTitle = document.title;
+
+export const check = () => {
+	const isMoekoeApp = navigator.userAgent?.includes('moekoemusic');
+	const isMoekoeSite = location.host === 'music.moekoe.cn' && location.pathname === '/share/';
+	const isMoekoeWeb = OriginalTitle === 'MoeKoe 萌音';
+	return {
+		isMoekoeApp,
+		isMoekoeSite,
+		isMoekoeWeb
+	}
+}
