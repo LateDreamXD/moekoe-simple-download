@@ -15,6 +15,7 @@ const { options, defaultOptions, refreshOptions } = defineProps<{
 
 const fullVersion = `${version.main}-pre${version.pre}`;
 const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
+const updated = ref(options.version !== version.main);
 const isMenuVisible = ref(false);
 const menuBtnPos = ref<{
 	left?: string;
@@ -143,10 +144,11 @@ function parsePosition(pos: SDOptionsV1['menuBtnPosition']) {
 }
 
 onMounted(() => {
-	if(options.version !== version.main) {
+	if(updated.value) {
 		const initVersion = () => {
 			options.version = version.main;
 			localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
+			updated.value = false;
 		}
 		document.addEventListener('mousedown', initVersion, { once: true });
 	}
@@ -160,7 +162,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<button :class="{'menu-toggle': true, 'updated': options.version !== fullVersion.split('-')[0]}"
+	<button :class="{'menu-toggle': true, 'updated': updated}"
 		data-type="icon" @click="isDragging || toggleMenu($refs.menu as HTMLDivElement)"
 		title="配置 Simple Download" draggable="true" :style="menuBtnPos"
 		@dragstart="handleDragStart" @dragend="handleDragEnd"
@@ -224,8 +226,8 @@ onUnmounted(() => {
 					</select>
 				</span>
 				<span class="menu-item">
-					<label for="aria2-protocol">安全连接</label>
-					<select id="aria2-protocol" v-model="options.aria2_options.connection.secure">
+					<label for="aria2-secure">安全连接</label>
+					<select id="aria2-secure" v-model="options.aria2_options.connection.secure">
 						<option :value="undefined">自动</option>
 						<option :value="true">强制启用</option>
 						<option :value="false">强制禁用</option>
@@ -240,8 +242,8 @@ onUnmounted(() => {
 					<input id="aria2-host" placeholder="localhost" v-model="options.aria2_options.connection.host" type="text" />
 				</span>
 				<span class="menu-item">
-					<label for="aria2-host">Aria2 主机端口</label>
-					<input id="aria2-host" placeholder="6800" v-model="options.aria2_options.connection.port" type="number" min="1" max="65535" step="1" />
+					<label for="aria2-port">Aria2 主机端口</label>
+					<input id="aria2-port" placeholder="6800" v-model="options.aria2_options.connection.port" type="number" min="1" max="65535" step="1" />
 				</span>
 				<span class="menu-item">
 					<label for="aria2-secret">密钥</label>
