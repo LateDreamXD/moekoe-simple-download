@@ -3,8 +3,8 @@
     "composite": true,
     "baseUrl": ".",
     "strict": true,
-    "target": "es2015",
-    "module": "nodenext",
+    "target": "esnext",
+    "module": "esnext",
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -13,7 +13,8 @@
     "types": [ "@types/node" ]
   },
   "include": [
-    "vite.config.ts",
+    "version.ts",
+    "*.config.ts",
     ".bin/**/*"
   ]
 }

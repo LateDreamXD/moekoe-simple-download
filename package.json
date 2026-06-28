@@ -5,7 +5,7 @@
   "version": "1.3.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsdown",
+    "build": "tsdown --config-loader unrun",
     "postbuild": "utils gen-manifest"
   },
   "author": {

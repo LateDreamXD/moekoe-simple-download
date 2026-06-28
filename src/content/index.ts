@@ -7,19 +7,18 @@ import { getCurrent } from './utils/get_song';
 import download from './utils/download';
 import { checkUpdate } from './utils/check_update';
 import { createAria2, changeProtocol } from './utils/aria2.js';
-import { version } from '../../package.json';
 import defaultOptions from './default.json';
 
 const aria2 = shallowRef<import('@baptistecdr/aria2').default | null>(null);
 const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 
 const checkUpdateAndNotify = async() => {
-	const latestVersion = await checkUpdate(version);
+	const latestVersion = await checkUpdate(version.main);
 	if(!latestVersion) { logger.log('not found new version'); return; }
 	logger.log(`new version available: v${latestVersion}`);
 	new Notification('Simple Download 有新版本', {
 		icon,
-		body: `当前版本: v${version}\n最新版本: v${latestVersion}`,
+		body: `当前版本: v${version.main}\n最新版本: v${latestVersion}`,
 		lang: 'zh-CN'
 	}).addEventListener('click', () =>
 		open('https://github.com/LateDreamXD/moekoe-simple-download/releases/latest'));
@@ -87,7 +86,7 @@ const init = async() => {
 				) || defaultOptions);
 			}
 
-			const app = createApp(App, { options, defaultOptions, refreshOptions, version });
+			const app = createApp(App, { options, defaultOptions, refreshOptions });
 			refreshOptions();
 			app.mount(root);
 

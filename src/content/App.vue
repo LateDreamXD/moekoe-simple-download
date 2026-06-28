@@ -2,11 +2,10 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import logger from './utils/logger';
 
-const { options, defaultOptions, refreshOptions, version } = defineProps<{
+const { options, defaultOptions, refreshOptions } = defineProps<{
 	options: SDOptionsV1;
 	defaultOptions: SDOptionsV1;
 	refreshOptions: Function;
-	version: string;
 }>();
 (() => {
 	Object.keys(defaultOptions).forEach(key => {
@@ -14,6 +13,7 @@ const { options, defaultOptions, refreshOptions, version } = defineProps<{
 	});
 })();
 
+const fullVersion = `${version.main}-pre${version.pre}`;
 const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 const isMenuVisible = ref(false);
 const menuBtnPos = ref<{
@@ -143,9 +143,9 @@ function parsePosition(pos: SDOptionsV1['menuBtnPosition']) {
 }
 
 onMounted(() => {
-	if(options.version !== version) {
+	if(options.version !== version.main) {
 		const initVersion = () => {
-			options.version = version;
+			options.version = version.main;
 			localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
 		}
 		document.addEventListener('mousedown', initVersion, { once: true });
@@ -160,7 +160,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<button :class="{'menu-toggle': true, 'updated': options.version !== version}"
+	<button :class="{'menu-toggle': true, 'updated': options.version !== fullVersion.split('-')[0]}"
 		data-type="icon" @click="isDragging || toggleMenu($refs.menu as HTMLDivElement)"
 		title="配置 Simple Download" draggable="true" :style="menuBtnPos"
 		@dragstart="handleDragStart" @dragend="handleDragEnd"
@@ -178,7 +178,7 @@ onUnmounted(() => {
 				<i class="fas" :class="{ 'fa-flask': !isExperimental, 'fa-angle-left': isExperimental }" />
 			</button>
 			<img draggable="false" :src="icon" width="32" height="32" />
-			<span class="title">Simple Download<sup v-text="`v${version}`" /></span>
+			<span class="title">Simple Download<sup v-text="`v${fullVersion}`" /></span>
 			<button type="button" data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)"><i class="fas fa-xmark" /></button>
 		</span>
 		<div v-if="isExperimental" class="experimental-features">
