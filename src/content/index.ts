@@ -86,7 +86,12 @@ const init = async() => {
 				) || defaultOptions);
 			}
 
-			const app = createApp(App, { options, defaultOptions, refreshOptions });
+			const getLastOptions = () =>
+				(JSON.parse(
+					localStorage.getItem('latedream:simple_download_options') || 'null'
+				) || defaultOptions) as SDOptionsV1;
+
+			const app = createApp(App, { options, defaultOptions, refreshOptions, getLastOptions });
 			refreshOptions();
 			app.mount(root);
 

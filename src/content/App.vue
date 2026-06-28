@@ -2,10 +2,11 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import logger from './utils/logger';
 
-const { options, defaultOptions, refreshOptions } = defineProps<{
+const { options, defaultOptions, refreshOptions, getLastOptions } = defineProps<{
 	options: SDOptionsV1;
 	defaultOptions: SDOptionsV1;
 	refreshOptions: Function;
+	getLastOptions: Function;
 }>();
 (() => {
 	Object.keys(defaultOptions).forEach(key => {
@@ -130,9 +131,11 @@ function saveOptions() {
 }
 
 function toggleMenu(el: HTMLDivElement) {
-	el.classList.toggle('close');
-	isMenuVisible.value = !isMenuVisible.value;
-	refreshOptions();
+	if(JSON.stringify(options) === JSON.stringify(getLastOptions()) || confirm('🤔 你有未保存的变动，是否继续关闭？')) {
+		el.classList.toggle('close');
+		isMenuVisible.value = !isMenuVisible.value;
+		refreshOptions();
+	}
 }
 
 function parsePosition(pos: SDOptionsV1['menuBtnPosition']) {
