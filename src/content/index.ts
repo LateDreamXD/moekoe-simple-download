@@ -29,7 +29,7 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 	const dlBtn = extraControls.querySelector('.extra-btn')!.cloneNode() as HTMLButtonElement;
 	dlBtn.innerHTML = '<i class="fas fa-download"></i>';
 	dlBtn.title = '通过 Simple Download 下载当前歌曲';
-	dlBtn.addEventListener('click', () => {
+	dlBtn.addEventListener('click', async() => {
 		const song = getCurrent();
 		if(!song) {
 			alert('😵 无法获取当前歌曲');
@@ -45,7 +45,7 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 
 		if(options.download_method === 'aria2') {
 			if(!aria2.value) aria2.value = createAria2(options.aria2_options.connection);
-			changeProtocol(aria2.value, options.aria2_options.protocol);
+			await changeProtocol(aria2.value, options.aria2_options.protocol);
 
 			if(options.aria2_options.protocol === 'ws') {
 				// @ts-ignore
