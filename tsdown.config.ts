@@ -1,6 +1,8 @@
 import { defineConfig, type UserConfig } from 'tsdown';
 import vue from 'unplugin-vue/rolldown';
 
+import version from './version';
+
 const shared: UserConfig = {
 	css: {
 		fileName: 'content.css',
@@ -17,9 +19,9 @@ const shared: UserConfig = {
 }
 
 export default defineConfig([{
-	define: { isProd: JSON.stringify(true) },
+	define: { isProd: JSON.stringify(true), version: JSON.stringify(version) },
 	deps: {
-		alwaysBundle: ['vue'],
+		alwaysBundle: ['vue', '@baptistecdr/aria2'],
 		onlyBundle: false,
 	},
 	entry: { content: 'src/content/index.ts' },
