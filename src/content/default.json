@@ -6,7 +6,7 @@
     "aria2_download": false
   },
   "aria2_options": {
-    "protocol": "http",
+    "protocol": "ws",
     "connection": {}
   },
   "menuBtnPosition": {

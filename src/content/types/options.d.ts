@@ -16,7 +16,7 @@ type SDOptionsV1 = {
 	};
 	aria2_options: {
 		dir: string,
-		/** @default 'http' */
+		/** @default 'ws' */
 		protocol: 'http' | 'ws',
 		connection: import('@/utils/aria2').Aria2Options
 	};
