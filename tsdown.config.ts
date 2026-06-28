@@ -19,7 +19,7 @@ const shared: UserConfig = {
 export default defineConfig([{
 	define: { isProd: JSON.stringify(true) },
 	deps: {
-		alwaysBundle: ['vue'],
+		alwaysBundle: ['vue', '@baptistecdr/aria2'],
 		onlyBundle: false,
 	},
 	entry: { content: 'src/content/index.ts' },

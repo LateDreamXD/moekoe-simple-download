@@ -17,5 +17,17 @@ const fetchDownload = async(url: string, filename?: string) => {
 	URL.revokeObjectURL(urlObject);
 }
 
-export {downlodFile, fetchDownload};
-export default {direct: downlodFile, fetch: fetchDownload};
+const aria2Download = async(
+	aria2: import('@baptistecdr/aria2').default,
+	url: string, filename?: string, dir?: string
+) => {
+	const header = [`Authorization: ${auth().Authorization}`];
+	await aria2.call('addUri', [url], {
+		dir,
+		header,
+		out: filename
+	});
+}
+
+export {downlodFile, fetchDownload, aria2Download};
+export default {direct: downlodFile, fetch: fetchDownload, aria2: aria2Download};

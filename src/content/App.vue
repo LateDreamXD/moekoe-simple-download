@@ -2,9 +2,10 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import logger from './utils/logger';
 
-const { options, defaultOptions, version } = defineProps<{
+const { options, defaultOptions, refreshOptions, version } = defineProps<{
 	options: SDOptionsV1;
 	defaultOptions: SDOptionsV1;
+	refreshOptions: Function;
 	version: string;
 }>();
 (() => {
@@ -25,6 +26,7 @@ const lastMenuBtnPos = ref<{
 }>({});
 
 const isDragging = ref(false);
+const isExperimental = ref(false);
 
 function updateEdge(pos?: {x?: number, y?: number}) {
 	const edgeThreshold = 50;
@@ -120,12 +122,16 @@ function saveOptions() {
 		alert('😵 文件名格式不能为空');
 		return;
 	}
+	if(!options.experimental_features.aria2_download && options.download_method === 'aria2')
+		options.download_method = 'fetch';
 	localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
+	alert('保存成功');
 }
 
 function toggleMenu(el: HTMLDivElement) {
 	el.classList.toggle('close');
 	isMenuVisible.value = !isMenuVisible.value;
+	refreshOptions();
 }
 
 function parsePosition(pos: SDOptionsV1['menuBtnPosition']) {
@@ -166,42 +172,103 @@ onUnmounted(() => {
 		left: options.menuBtnPosition.x + (currentEdge === 'right' ? -380 : 24) + 'px',
 		top: options.menuBtnPosition.y - 24 + 'px'
 	}">
+		<form @submit.prevent="saveOptions" @reset.prevent="resetOptions">
 		<span class="title-panel">
+			<button type="button" data-type="icon" :title="isExperimental? '返回': '实验性功能'" @click="isExperimental = !isExperimental">
+				<i class="fas" :class="{ 'fa-flask': !isExperimental, 'fa-angle-left': isExperimental }" />
+			</button>
 			<img draggable="false" :src="icon" width="32" height="32" />
 			<span class="title">Simple Download<sup v-text="`v${version}`" /></span>
-			<button data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)"><i class="fas fa-xmark" /></button>
+			<button type="button" data-type="icon" @click="toggleMenu($refs.menu as HTMLDivElement)"><i class="fas fa-xmark" /></button>
 		</span>
-		<span class="separator" />
-		<span class="menu-item">
-			<label for="download-mode">
-				下载方式
-				<small v-if="options.download_method === 'fetch'">(～￣▽￣)～</small>
-				<small v-else>～(￣▽￣～)</small>
-			</label>
-			<select id="download-mode" v-model="options.download_method">
-				<option value="fetch">Fetch API</option>
-				<option value="direct">直接下载</option>
-			</select>
-		</span>
-		<span v-if="options.download_method === 'fetch'" class="menu-item">
-			<label for="filename-format" class="help" @click="formatHelp">文件名格式<sup>?</sup></label>
-			<input id="filename-format" v-model="options.filename_format" type="text" required />
-		</span>
-		<span class="separator" />
-		<span class="menu-item">
-			<label for="check-update">
-				检查更新
-				<small>每次启动时检查更新</small>
-			</label>
-			<input id="check-update" type="checkbox" role="switch" v-model="options.check_update" />
-		</span>
-		<span class="menu-item">
+		<div v-if="isExperimental" class="experimental-features">
+			<span class="experimental-tip">这些功能可能出错，请在 <a href="https://github.com/LateDreamXD/moekoe-simple-download/issues/new?template=bug_report.yml" target="_blank">Issue Tracker</a> 提交你遇到的问题。</span>
+			<span class="menu-item">
+				<label for="enable-aria2">启用 Aria2 下载方式</label>
+				<input id="enable-aria2" type="checkbox" role="switch" v-model="options.experimental_features.aria2_download" />
+			</span>
+		</div>
+		<div v-else class="features">
+			<span class="separator" />
+			<span class="menu-item">
+				<label for="download-mode">
+					下载方式
+					<small v-if="options.download_method === 'fetch'">(～￣▽￣)～</small>
+					<small v-else>～(￣▽￣～)</small>
+				</label>
+				<select v-if="options.experimental_features.aria2_download" id="download-mode" v-model="options.download_method">
+					<optgroup label="实验性">
+						<option value="aria2">Aria2</option>
+					</optgroup>
+					<optgroup label="稳定性">
+						<option value="fetch">Fetch API</option>
+						<option value="direct">直接下载</option>
+					</optgroup>
+				</select>
+				<select v-else id="download-mode" v-model="options.download_method">
+					<option value="fetch">Fetch API</option>
+					<option value="direct">直接下载</option>
+				</select>
+			</span>
+			<span v-if="options.download_method === 'fetch' || options.download_method === 'aria2'" class="menu-item">
+				<label for="filename-format" class="help" @click="formatHelp">文件名格式<sup>?</sup></label>
+				<input id="filename-format" v-model="options.filename_format" type="text" required />
+			</span>
+			<div v-if="options.download_method === 'aria2'" class="aria2-items">
+				<span class="experimental-tip">这是实验性功能，可能出错，请在 <a href="https://github.com/LateDreamXD/moekoe-simple-download/issues/new?template=bug_report.yml" target="_blank">Issue Tracker</a> 提交你遇到的问题。</span>
+				<span class="menu-item">
+					<label for="aria2-protocol">通讯协议</label>
+					<select id="aria2-protocol" v-model="options.aria2_options.protocol">
+						<option value="http">HTTP</option>
+						<option value="ws">WebSocket</option>
+					</select>
+				</span>
+				<span class="menu-item">
+					<label for="aria2-protocol">安全连接</label>
+					<select id="aria2-protocol" v-model="options.aria2_options.connection.secure">
+						<option :value="undefined">自动</option>
+						<option :value="true">强制启用</option>
+						<option :value="false">强制禁用</option>
+					</select>
+				</span>
+				<span class="menu-item">
+					<label for="aria2-dir">下载目录</label>
+					<input id="aria2-dir" placeholder="/" v-model="options.aria2_options.dir" type="text" />
+				</span>
+				<span class="menu-item">
+					<label for="aria2-host">Aria2 主机地址</label>
+					<input id="aria2-host" placeholder="localhost" v-model="options.aria2_options.connection.host" type="text" />
+				</span>
+				<span class="menu-item">
+					<label for="aria2-host">Aria2 主机端口</label>
+					<input id="aria2-host" placeholder="6800" v-model="options.aria2_options.connection.port" type="number" min="1" max="65535" step="1" />
+				</span>
+				<span class="menu-item">
+					<label for="aria2-secret">密钥</label>
+					<input id="aria2-secret" v-model="options.aria2_options.connection.secret" type="password" />
+				</span>
+				<span class="menu-item">
+					<label for="aria2-path">请求路径</label>
+					<input id="aria2-path" placeholder="/jsonrpc" v-model="options.aria2_options.connection.path" type="text" />
+				</span>
+			</div>
+			<span class="separator" />
+			<span class="menu-item">
+				<label for="check-update">
+					检查更新
+					<small>每次启动时检查更新</small>
+				</label>
+				<input id="check-update" type="checkbox" role="switch" v-model="options.check_update" />
+			</span>
+		</div>
+		<span class="menu-item end">
 			<i style="opacity: 0.05;">@LateDreamXD</i>
 			<span class="menu-actions">
-				<button @click="resetOptions" type="reset">重置</button>
-				<button @click="saveOptions" type="submit">保存</button>
+				<button type="reset">重置</button>
+				<button type="submit">保存</button>
 			</span>
 		</span>
+		</form>
 	</div>
 </template>
 
@@ -362,6 +429,9 @@ onUnmounted(() => {
 	&.light {
 		@include light;
 	}
+	.features, .experimental-features {
+		padding: 1.5rem 0;
+	}
 	.separator {
 		display: block;
 		width: 100%;
@@ -379,7 +449,15 @@ onUnmounted(() => {
 			text-align: center;
 		}
 	}
+	.experimental-tip {
+		color: orange;
+		display: block;
+		text-align: center;
+		font-size: 0.75rem;
+		unicode-bidi: isolate;
+	}
 	.menu-item {
+		padding: 0.4rem 0;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -482,6 +560,9 @@ button[data-type="icon"] {
 		width: 100%;
 		height: 100%;
 	}
+}
+form {
+	margin: 0;
 }
 :deep(svg) {
 	fill: currentColor;
