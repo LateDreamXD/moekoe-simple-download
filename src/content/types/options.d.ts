@@ -2,7 +2,7 @@ type SDOptionsV1 = {
 	[x: string]: any;
 	check_update: boolean;
 	/** @default 'fetch' */
-	download_method: 'fetch' | 'direct' | 'aria2';
+	download_method: 'fetch' | 'direct' | 'aria2' | 'idm';
 	/**
 	 * placeholders:
 	 * - {artist}: music artist
@@ -12,7 +12,8 @@ type SDOptionsV1 = {
 	 */
 	filename_format: string;
 	experimental_features: {
-		aria2_download: boolean
+		aria2_download: boolean,
+		idm_download: boolean
 	};
 	aria2_options: {
 		dir: string,
@@ -20,6 +21,10 @@ type SDOptionsV1 = {
 		protocol: 'http' | 'ws',
 		connection: import('@/utils/aria2').Aria2Options
 	};
+	idm_options: {
+		/** @default 1 */
+		client: number
+	},
 	version?: string;
 	menuBtnPosition: {
 		x: number;

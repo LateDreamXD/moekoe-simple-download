@@ -3,11 +3,15 @@
   "filename_format": "{artist} - {title}.{ext}",
   "check_update": true,
   "experimental_features": {
-    "aria2_download": false
+    "aria2_download": false,
+    "idm_download": false
   },
   "aria2_options": {
     "protocol": "ws",
     "connection": {}
+  },
+  "idm_options": {
+    "client": 1
   },
   "menuBtnPosition": {
     "x": -16,
