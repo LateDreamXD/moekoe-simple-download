@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import logger from './utils/logger';
+import logger, { m } from './utils/logger';
 
 const { options, defaultOptions, refreshOptions, getLastOptions } = defineProps<{
 	options: SDOptionsV1;
@@ -78,7 +78,7 @@ function handleDragEnd(e: DragEvent) {
 		x: parseInt(menuBtnPos.value.left!.replace('px', '')),
 		y: parseInt(menuBtnPos.value.top!.replace('px', ''))
 	}
-	localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
+	LateLib.setLocalStorage('latedream:simple_download_options', options);
 }
 
 function handleMouseEnter() {
@@ -105,15 +105,11 @@ if(theme.value === 'auto')
 	theme.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
 function formatHelp() {
-	// just keep this indent
-	alert(`ℹ️ 可用的占位符：
-        - {artist}: 歌手
-        - {title}: 歌名
-        - {ext}: 文件扩展名`);
+	$modal.alert(m('ℹ️ 可用占位符', '- {artist}: 歌手', '- {title}: 歌名', '- {ext}: 文件扩展名'));
 }
 
-function resetOptions() {
-	if(confirm('🤔 你确定要重置吗？将无法恢复')) {
+async function resetOptions() {
+	if(await $modal.confirm(m('🤔 你确定要重置吗？将无法恢复'))) {
 		localStorage.removeItem('latedream:simple_download_options');
 		Object.assign(options, defaultOptions);
 	}
@@ -121,17 +117,17 @@ function resetOptions() {
 
 function saveOptions() {
 	if(options.download_method === 'fetch' && !options.filename_format) {
-		alert('😵 文件名格式不能为空');
+		$modal.alert(m('😵 文件名格式不能为空'));
 		return;
 	}
 	if(!options.experimental_features.aria2_download && options.download_method === 'aria2')
 		options.download_method = 'fetch';
 	localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
-	alert('保存成功');
+	$modal.alert(m('保存成功'));
 }
 
-function toggleMenu(el: HTMLDivElement) {
-	if(JSON.stringify(options) === JSON.stringify(getLastOptions()) || confirm('🤔 你有未保存的变动，是否继续关闭？')) {
+async function toggleMenu(el: HTMLDivElement) {
+	if(JSON.stringify(options) === JSON.stringify(getLastOptions()) || await $modal.confirm(m('🤔 你有未保存的变动，是否继续关闭？'))) {
 		el.classList.toggle('close');
 		isMenuVisible.value = !isMenuVisible.value;
 		refreshOptions();
@@ -150,7 +146,7 @@ onMounted(() => {
 	if(updated.value) {
 		const initVersion = () => {
 			options.version = version.main;
-			localStorage.setItem('latedream:simple_download_options', JSON.stringify(options));
+			LateLib.setLocalStorage('latedream:simple_download_options', options);
 			updated.value = false;
 		}
 		document.addEventListener('mousedown', initVersion, { once: true });

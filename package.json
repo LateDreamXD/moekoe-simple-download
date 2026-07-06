@@ -19,7 +19,9 @@
     "vue": "^3.5.39"
   },
   "devDependencies": {
+    "@latedream/moekoe-latelib-types": "^0.1.0",
     "@latedream/moekoe-plugin-utils": "1.0.0-beta.2",
+    "@latedream/moekoe-types": "^1.6.7",
     "@tsdown/css": "^0.22.3",
     "@types/node": "^26.0.1",
     "chrome-types": "^0.1.430",

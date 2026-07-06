@@ -1,27 +1,30 @@
-import { createApp, reactive, shallowRef } from 'vue';
+import { m } from './utils/logger';
+
+if(!window.LateLib) {
+	$modal.alert(m('Simple Download 现在需要安装 LateLib 才能正常运作。', '请前往插件市场安装 LateLib 后刷新页面/重启应用。'));
+	throw new Error(m('LateLib not found'));
+}
+
 import App from './App.vue';
 import logger from './utils/logger';
 import { upgrade } from './utils/upgrade_from_0.x';
 import { check } from './utils/check_moekoe';
-import { getCurrent } from './utils/get_song';
 import download from './utils/download';
 import { checkUpdate } from './utils/check_update';
 import { createAria2, changeProtocol } from './utils/aria2.js';
 import defaultOptions from './default.json';
 
+const { createApp, reactive, shallowRef } = LateLib.useVue();
 const aria2 = shallowRef<import('@baptistecdr/aria2').default | null>(null);
-const icon = isProd? chrome.runtime.getURL('icon.png'): '/icon.png';
 
 const checkUpdateAndNotify = async() => {
 	const latestVersion = await checkUpdate(version.main);
 	if(!latestVersion) { logger.log('not found new version'); return; }
 	logger.log(`new version available: v${latestVersion}`);
-	new Notification('Simple Download 有新版本', {
-		icon,
-		body: `当前版本: v${version.main}\n最新版本: v${latestVersion}`,
-		lang: 'zh-CN'
-	}).addEventListener('click', () =>
-		open('https://github.com/LateDreamXD/moekoe-simple-download/releases/latest'));
+
+	if(await $modal.confirm(
+		m('Simple Download 有新版本可用！', `当前版本: v${version.main}\n最新版本: v${latestVersion}`, '是否前往下载？')
+	)) open('https://github.com/LateDreamXD/moekoe-simple-download/releases/latest', '_blank', 'noopener');
 }
 
 const addDlBtnToCtrls = (options: SDOptionsV1) => {
@@ -30,9 +33,9 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 	dlBtn.innerHTML = '<i class="fas fa-download"></i>';
 	dlBtn.title = '通过 Simple Download 下载当前歌曲';
 	dlBtn.addEventListener('click', async() => {
-		const song = getCurrent();
+		const song = LateLib.getCurrentSong();
 		if(!song) {
-			alert('😵 无法获取当前歌曲');
+			$modal.alert(m('😵 无法获取当前歌曲'));
 			return;
 		}
 
@@ -56,7 +59,7 @@ const addDlBtnToCtrls = (options: SDOptionsV1) => {
 				// @ts-ignore
 				aria2.value.addEventListener('onDownloadError', ({ detail }) => {
 					logger.error('download failed, detail:', detail);
-					alert('Aria2 下载失败，请检查连接配置或服务运行状态\n如果一切正常请将控制台错误信息提交反馈');
+					$message.error(m('Aria2 下载失败，请检查连接配置或服务运行状态', '如果一切正常请将控制台错误信息提交反馈'));
 				}, { once: true });
 			}
 

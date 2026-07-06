@@ -8,19 +8,30 @@
     "id": "simple-download",
     "min_moekoe_version": "1.5.5",
     "description": "MoeKoe Music 简单下载插件 —— 轻量 · 简洁 · 开源",
-    "permissions": ["scripting"],
     "injects": [{
-      "matches": ["<all_urls>"],
+      "matches": [
+        "http://localhost:8080/*",
+        "https://app.testnet.music.moekoe.cn/*",
+        "file:///*"
+      ],
       "js": ["api.iife.js"],
       "run_at": "document_start",
       "world": "MAIN"
     },{
-      "matches": ["<all_urls>"],
+      "matches": [
+        "http://localhost:8080/*",
+        "https://app.testnet.music.moekoe.cn/*",
+        "file:///*"
+      ],
       "js": ["content.iife.js"],
       "css": ["content.css"],
       "run_at": "document_end"
     }],
     "icons": {"256": "icon.png"},
-    "csp": [{"matches": ["<all_urls>"], "resources": ["icon.png"]}]
+    "csp": [{"matches": [
+      "http://localhost:8080/*",
+      "https://app.testnet.music.moekoe.cn/*",
+      "file:///*"
+    ], "resources": ["icon.png"]}]
   }
 }
