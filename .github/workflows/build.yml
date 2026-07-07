@@ -1,0 +1,52 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          cache: 'pnpm'
+          node-version: 22
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: |
+          pnpm build
+          cp LICENSE dist/LICENSE
+          mkdir plugin
+          mkdir plugin/simple-download
+          mv dist/* plugin/simple-download
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: simple-download-ci-build-${{ github.run_id }}
+          path: 'plugin/**/*'
+      - name: Archive
+        uses: TheDoctor0/zip-release@0.7.6
+        if: ${{ github.ref_type == 'tag' }}
+        with:
+          directory: plugin
+          filename: simple-download-${{ github.ref_name }}.zip
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: ${{ github.ref_type == 'tag' }}
+        with:
+          artifacts: 'plugin/simple-download-${{ github.ref_name }}.zip'
+          draft: true
+          name: 'Simple Download ${{ github.ref_name }}'
